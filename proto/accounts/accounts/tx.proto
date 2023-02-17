@@ -1,0 +1,7 @@
+syntax = "proto3";
+package accounts.accounts;
+
+option go_package = "accounts/x/accounts/types";
+
+// Msg defines the Msg service.
+service Msg {}

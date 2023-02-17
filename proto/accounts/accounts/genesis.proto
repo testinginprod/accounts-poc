@@ -1,0 +1,12 @@
+syntax = "proto3";
+package accounts.accounts;
+
+import "gogoproto/gogo.proto";
+import "accounts/accounts/params.proto";
+
+option go_package = "accounts/x/accounts/types";
+
+// GenesisState defines the accounts module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+}

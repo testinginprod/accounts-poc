@@ -1,0 +1,18 @@
+package keeper_test
+
+import (
+	"testing"
+
+	testkeeper "accounts/testutil/keeper"
+	"accounts/x/accounts/types"
+	"github.com/stretchr/testify/require"
+)
+
+func TestGetParams(t *testing.T) {
+	k, ctx := testkeeper.AccountsKeeper(t)
+	params := types.DefaultParams()
+
+	k.SetParams(ctx, params)
+
+	require.EqualValues(t, params, k.GetParams(ctx))
+}
