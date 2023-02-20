@@ -500,6 +500,7 @@ func New(
 		keys[accountsmoduletypes.StoreKey],
 		keys[accountsmoduletypes.MemStoreKey],
 		app.GetSubspace(accountsmoduletypes.ModuleName),
+		Accounts(),
 	)
 	accountsModule := accountsmodule.NewAppModule(appCodec, app.AccountsKeeper, app.AccountKeeper, app.BankKeeper)
 

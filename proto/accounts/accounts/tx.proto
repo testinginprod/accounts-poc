@@ -3,5 +3,35 @@ package accounts.accounts;
 
 option go_package = "accounts/x/accounts/types";
 
+import "google/protobuf/any.proto";
+import "cosmos/base/v1beta1/coin.proto";
+
+
 // Msg defines the Msg service.
-service Msg {}
+service Msg {
+  rpc Deploy(MsgDeploy) returns (MsgDeployResponse);
+  rpc Execute(MsgExecute) returns (MsgExecuteResponse);
+}
+
+message MsgDeploy {
+  string kind = 1;
+  google.protobuf.Any init_message = 2;
+  repeated cosmos.base.v1beta1.Coin funds = 3;
+}
+
+message MsgDeployResponse {
+  string address = 1;
+  uint64 id = 2;
+  google.protobuf.Any data = 3;
+}
+
+message MsgExecute {
+  string address = 1;
+  google.protobuf.Any message = 2;
+  repeated cosmos.base.v1beta1.Coin funds = 3;
+}
+
+message MsgExecuteResponse {
+  google.protobuf.Any data = 1;
+}
+

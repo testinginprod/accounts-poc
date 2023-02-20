@@ -1,0 +1,26 @@
+syntax="proto3";
+
+package examples.allowance.v1;
+
+option go_package = "accounts/examples/allowance/v1";
+
+import "gogoproto/gogo.proto";
+
+message InitMsg {}
+
+
+message IncreaseAllowance {
+  string address = 1;
+  string denom = 2;
+  string amount = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
+}
+
+message DecreaseAllowance {
+  string address = 1;
+  string denom = 2;
+  string amount = 3  [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
+}
+
+message ResetAllowance {
+  string address = 1;
+}
