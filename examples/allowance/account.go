@@ -43,7 +43,16 @@ func (a Account) IncreaseAllowance(ctx *sdk.Context, user sdk.Identity, denom st
 
 func (a Account) RegisterExecuteHandler(r *sdk.ExecuteRouter) {
 	sdk.RegisterExecuteHandler(r, func(ctx *sdk.Context, msg v1.IncreaseAllowance) (*sdk.ExecuteResponse, error) {
-		panic("impl")
+		addr, err := sdk.IdentityFromString(msg.Address)
+		if err != nil {
+			return nil, err
+		}
+
+		err = a.IncreaseAllowance(ctx, addr, msg.Denom, *msg.Amount)
+		if err != nil {
+			return nil, err
+		}
+		return new(sdk.ExecuteResponse), nil
 	})
 
 	sdk.RegisterExecuteHandler(r, func(ctx *sdk.Context, msg v1.DecreaseAllowance) (*sdk.ExecuteResponse, error) {

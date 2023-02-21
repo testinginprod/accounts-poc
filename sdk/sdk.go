@@ -1,7 +1,6 @@
 package sdk
 
 import (
-	"context"
 	"cosmossdk.io/collections/codec"
 	"cosmossdk.io/math"
 	"fmt"
@@ -12,16 +11,12 @@ import (
 type InternalAccount interface{}
 type Identity = sdk.AccAddress
 
+var IdentityFromString = sdk.AccAddressFromBech32
+
 var IdentityKey = codec.NewBytesKey[Identity]()
 var IdentityValue = codec.KeyToValueCodec(IdentityKey)
 var IntKey codec.KeyCodec[math.Int] = nil
 var IntValue = codec.KeyToValueCodec(IntKey)
-
-type Context struct {
-	context.Context
-	Sender Identity
-	Self   Identity
-}
 
 type InitResponse struct{}
 

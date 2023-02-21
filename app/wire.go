@@ -8,6 +8,6 @@ import (
 
 func Accounts() keeper.Accounts {
 	return keeper.Accounts{
-		keeper.WithAccount[allowancev1.InitMsg](allowance.NewAccount),
+		keeper.WithAccount[allowancev1.InitMsg]("allowance", allowance.NewAccount),
 	}
 }
