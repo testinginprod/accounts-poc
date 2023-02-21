@@ -4,25 +4,11 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fe856d3c-df8a-4839-b288-564c7432e80b" name="Changes" comment="tmp">
-      <change afterPath="$PROJECT_DIR$/sdk/context.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sdk/schema.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/store.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/x/accounts/keeper/runtime.go" afterDir="false" />
+    <list default="true" id="fe856d3c-df8a-4839-b288-564c7432e80b" name="Changes" comment="tmp2">
+      <change afterPath="$PROJECT_DIR$/testutil/testruntime/testruntime.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/wire.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/wire.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/allowance/account.go" beforeDir="false" afterPath="$PROJECT_DIR$/examples/allowance/account.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/proto/accounts/accounts/tx.proto" beforeDir="false" afterPath="$PROJECT_DIR$/proto/accounts/accounts/tx.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/protocgen.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/protocgen.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sdk/sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/sdk.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/x/accounts/keeper/internal_account.go" beforeDir="false" afterPath="$PROJECT_DIR$/x/accounts/keeper/internal_account.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/x/accounts/keeper/keeper.go" beforeDir="false" afterPath="$PROJECT_DIR$/x/accounts/keeper/keeper.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/x/accounts/keeper/msg_server.go" beforeDir="false" afterPath="$PROJECT_DIR$/x/accounts/keeper/msg_server.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/x/accounts/types/genesis.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/x/accounts/types/genesis.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/x/accounts/types/params.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/x/accounts/types/params.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/x/accounts/types/query.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/x/accounts/types/query.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/x/accounts/types/query.pb.gw.go" beforeDir="false" afterPath="$PROJECT_DIR$/x/accounts/types/query.pb.gw.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/x/accounts/types/tx.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/x/accounts/types/tx.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/schema.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/testutil/keeper/accounts.go" beforeDir="false" afterPath="$PROJECT_DIR$/testutil/keeper/accounts.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +120,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="tmp" />
-    <option name="LAST_COMMIT_MESSAGE" value="tmp" />
+    <MESSAGE value="tmp2" />
+    <option name="LAST_COMMIT_MESSAGE" value="tmp2" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
