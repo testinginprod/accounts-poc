@@ -1,26 +1,12 @@
 package sdk
 
 import (
-	"cosmossdk.io/collections/codec"
-	"cosmossdk.io/math"
 	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/gogo/protobuf/proto"
 )
 
-type InternalAccount interface{}
 type Identity = sdk.AccAddress
-
-var IdentityFromString = sdk.AccAddressFromBech32
-
-var IdentityKey = codec.NewBytesKey[Identity]()
-var IdentityValue = codec.KeyToValueCodec(IdentityKey)
-var IntKey codec.KeyCodec[math.Int] = nil
-var IntValue = codec.KeyToValueCodec(IntKey)
-
-type InitResponse struct{}
-
-type ExecuteResponse struct{}
 
 type Account[T any, PT Encodable[T]] interface {
 	Init(ctx *Context, t T) (*InitResponse, error)
@@ -76,5 +62,22 @@ func (q *QueryRouter) Handler() func(ctx *Context, msg proto.Message) (proto.Mes
 			return nil, fmt.Errorf("unknown query request: %s", name)
 		}
 		return handler(ctx, msg)
+	}
+}
+
+func RegisterQueryHandler[Req, Resp any, PReq Encodable[Req], PResp Encodable[Resp]](r *QueryRouter, handler func(ctx *Context, msg Req) (Resp, error)) {
+	reqName := proto.MessageName(PReq(new(Req)))
+	r.handlers[reqName] = func(ctx *Context, msg proto.Message) (proto.Message, error) {
+		concrete, ok := msg.(PReq)
+		if !ok {
+			return nil, fmt.Errorf("invalid query request: wanted %T, got %T", new(Req), msg)
+		}
+
+		resp, err := handler(ctx, *concrete)
+		if err != nil {
+			return nil, err
+		}
+
+		return PResp(&resp), nil
 	}
 }

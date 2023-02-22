@@ -26,14 +26,18 @@ func (m msgServer) Deploy(ctx context.Context, deploy *types.MsgDeploy) (*types.
 		return nil, err
 	}
 
-	accountAddr, accountID, data, err := m.k.Deploy(sdk.UnwrapSDKContext(ctx), deploy.Kind, addr, initMsg)
+	accountAddr, accountID, data, err := m.k.Deploy(sdk.UnwrapSDKContext(ctx), deploy.Kind, addr, deploy.Funds, initMsg)
 	if err != nil {
 		return nil, err
 	}
 
-	dataAny, err := codectypes.NewAnyWithValue(data)
-	if err != nil {
-		return nil, err
+	var dataAny *codectypes.Any
+
+	if data != nil {
+		dataAny, err = codectypes.NewAnyWithValue(data)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return &types.MsgDeployResponse{
@@ -44,7 +48,35 @@ func (m msgServer) Deploy(ctx context.Context, deploy *types.MsgDeploy) (*types.
 }
 
 func (m msgServer) Execute(ctx context.Context, execute *types.MsgExecute) (*types.MsgExecuteResponse, error) {
-	panic("impl")
+	addr, err := sdk.AccAddressFromBech32(execute.Address)
+	if err != nil {
+		return nil, err
+	}
+
+	sender, err := sdk.AccAddressFromBech32(execute.Sender)
+	if err != nil {
+		return nil, err
+	}
+
+	executeMsg, err := unmarshalAny(execute.Message)
+	if err != nil {
+		return nil, err
+	}
+
+	data, err := m.k.Execute(sdk.UnwrapSDKContext(ctx), sender, addr, execute.Funds, executeMsg)
+	if err != nil {
+		return nil, err
+	}
+
+	var anyData *codectypes.Any
+	if data != nil {
+		anyData, err = codectypes.NewAnyWithValue(data)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return &types.MsgExecuteResponse{Data: anyData}, nil
 }
 
 // NewMsgServerImpl returns an implementation of the MsgServer interface

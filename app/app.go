@@ -106,6 +106,9 @@ import (
 	accountsmodule "accounts/x/accounts"
 	accountsmodulekeeper "accounts/x/accounts/keeper"
 	accountsmoduletypes "accounts/x/accounts/types"
+	authnmodule "accounts/x/authn"
+	authnmodulekeeper "accounts/x/authn/keeper"
+	authnmoduletypes "accounts/x/authn/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	appparams "accounts/app/params"
@@ -165,6 +168,7 @@ var (
 		ica.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		accountsmodule.AppModuleBasic{},
+		authnmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -239,6 +243,8 @@ type App struct {
 	ScopedICAHostKeeper  capabilitykeeper.ScopedKeeper
 
 	AccountsKeeper accountsmodulekeeper.Keeper
+
+	AuthnKeeper authnmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -284,6 +290,7 @@ func New(
 		ibctransfertypes.StoreKey, icahosttypes.StoreKey, capabilitytypes.StoreKey, group.StoreKey,
 		icacontrollertypes.StoreKey,
 		accountsmoduletypes.StoreKey,
+		authnmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -504,6 +511,14 @@ func New(
 	)
 	accountsModule := accountsmodule.NewAppModule(appCodec, app.AccountsKeeper, app.AccountKeeper, app.BankKeeper)
 
+	app.AuthnKeeper = *authnmodulekeeper.NewKeeper(
+		appCodec,
+		keys[authnmoduletypes.StoreKey],
+		keys[authnmoduletypes.MemStoreKey],
+		app.GetSubspace(authnmoduletypes.ModuleName),
+	)
+	authnModule := authnmodule.NewAppModule(appCodec, app.AuthnKeeper, app.AccountKeeper, app.BankKeeper)
+
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	/**** IBC Routing ****/
@@ -570,6 +585,7 @@ func New(
 		transferModule,
 		icaModule,
 		accountsModule,
+		authnModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -600,6 +616,7 @@ func New(
 		paramstypes.ModuleName,
 		vestingtypes.ModuleName,
 		accountsmoduletypes.ModuleName,
+		authnmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -625,6 +642,7 @@ func New(
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
 		accountsmoduletypes.ModuleName,
+		authnmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -655,6 +673,7 @@ func New(
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
 		accountsmoduletypes.ModuleName,
+		authnmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -685,6 +704,7 @@ func New(
 		ibc.NewAppModule(app.IBCKeeper),
 		transferModule,
 		accountsModule,
+		authnModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()
@@ -890,6 +910,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(icacontrollertypes.SubModuleName)
 	paramsKeeper.Subspace(icahosttypes.SubModuleName)
 	paramsKeeper.Subspace(accountsmoduletypes.ModuleName)
+	paramsKeeper.Subspace(authnmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

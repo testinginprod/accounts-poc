@@ -5,6 +5,7 @@ option go_package = "accounts/x/accounts/types";
 
 import "google/protobuf/any.proto";
 import "cosmos/base/v1beta1/coin.proto";
+import "gogoproto/gogo.proto";
 
 
 // Msg defines the Msg service.
@@ -17,7 +18,8 @@ message MsgDeploy {
   string sender = 1;
   string kind = 2;
   google.protobuf.Any init_message = 3;
-  repeated cosmos.base.v1beta1.Coin funds = 4;
+  repeated cosmos.base.v1beta1.Coin funds = 4 [(gogoproto.nullable) = false];
+  // TODO: maybe add a sub-account option
 }
 
 message MsgDeployResponse {
@@ -30,7 +32,7 @@ message MsgExecute {
   string sender = 1;
   string address = 2;
   google.protobuf.Any message = 3;
-  repeated cosmos.base.v1beta1.Coin funds = 4;
+  repeated cosmos.base.v1beta1.Coin funds = 4 [(gogoproto.nullable) = false];
 }
 
 message MsgExecuteResponse {

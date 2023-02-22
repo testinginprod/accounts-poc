@@ -1,0 +1,24 @@
+syntax="proto3";
+
+package examples.vesting.v1;
+
+option go_package="accounts/examples/vesting/v1";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "gogoproto/gogo.proto";
+
+message Init {
+  string beneficiary = 1;
+  google.protobuf.Timestamp start_time = 2;
+  google.protobuf.Duration duration = 3;
+}
+
+message MsgWithdrawUnlockedCoins {}
+
+message QueryVestingStatusRequest {}
+
+message QueryVestingStatusResponse {
+  string unlocked_amount = 1 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string withdrawable_amount = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+}
