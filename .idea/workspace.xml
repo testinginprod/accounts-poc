@@ -4,15 +4,11 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fe856d3c-df8a-4839-b288-564c7432e80b" name="Changes" comment="3">
-      <change afterPath="$PROJECT_DIR$/sdk/schema.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sdk/sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/sdk.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testutil/keeper/accounts.go" beforeDir="false" afterPath="$PROJECT_DIR$/testutil/keeper/accounts.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/x/accounts/client/cli/tx.go" beforeDir="false" afterPath="$PROJECT_DIR$/x/accounts/client/cli/tx.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/x/accounts/keeper/internal_account.go" beforeDir="false" afterPath="$PROJECT_DIR$/x/accounts/keeper/internal_account.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/x/accounts/keeper/keeper.go" beforeDir="false" afterPath="$PROJECT_DIR$/x/accounts/keeper/keeper.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/x/accounts/keeper/runtime.go" beforeDir="false" afterPath="$PROJECT_DIR$/x/accounts/keeper/runtime.go" afterDir="false" />
+    <list default="true" id="fe856d3c-df8a-4839-b288-564c7432e80b" name="Changes" comment="tmp">
+      <change beforePath="$PROJECT_DIR$/proto/accounts/accounts/query.proto" beforeDir="false" afterPath="$PROJECT_DIR$/proto/accounts/accounts/query.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proto/buf.lock" beforeDir="false" afterPath="$PROJECT_DIR$/proto/buf.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/x/accounts/keeper/query.go" beforeDir="false" afterPath="$PROJECT_DIR$/x/accounts/keeper/query.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/x/accounts/types/query.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/x/accounts/types/query.pb.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,13 +119,13 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="tmp" />
     <MESSAGE value="tmp2" />
     <MESSAGE value="tmp3" />
     <MESSAGE value="more stuff" />
     <MESSAGE value="more stuff2" />
     <MESSAGE value="3" />
-    <option name="LAST_COMMIT_MESSAGE" value="3" />
+    <MESSAGE value="tmp" />
+    <option name="LAST_COMMIT_MESSAGE" value="tmp" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

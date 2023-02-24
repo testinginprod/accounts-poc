@@ -81,49 +81,60 @@ func GetDeployCmd(schemas map[string]*keeper.Schema) *cobra.Command {
 }
 
 func GetExecuteCmd(schemas map[string]*keeper.Schema) *cobra.Command {
-	/*
-		cmd := &cobra.Command{
-			Use:  "execute [contract-address] [type] [json]",
-			Args: cobra.ExactArgs(3),
-			RunE: func(cmd *cobra.Command, args []string) error {
-				clientCtx, err := client.GetClientTxContext(cmd)
-				if err != nil {
-					return err
-				}
+	cmd := &cobra.Command{
+		Use:  "execute [contract-address] [type] [json]",
+		Args: cobra.ExactArgs(3),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
 
-				// TODO GET ACCOUNT TYPE
+			accTypeResp, err := accountstypes.NewQueryClient(clientCtx.GRPCClient).AccountKind(cmd.Context(), &accountstypes.QueryAccountKindRequest{Address: args[0]})
+			if err != nil {
+				return err
+			}
 
-				msgType := args[1]
-				msgJSON := args[2]
+			msgType := args[1]
+			msgJSON := args[2]
 
-				accountSchema, exists := schemas[accountType]
-				if !exists {
-					return fmt.Errorf("unkown account type %s", accountType)
-				}
+			accountSchema, exists := schemas[accTypeResp.Kind]
+			if !exists {
+				return fmt.Errorf("unkown account type %s", accTypeResp.Kind)
+			}
 
-				msgSchema, exists := accountSchema.ExecuteMsgs[msgType]
-				if !exists {
-					return fmt.Errorf("unknown execute msg for account type %s", msgType)
-				}
+			msgSchema, exists := accountSchema.ExecuteMsgs[msgType]
+			if !exists {
+				return fmt.Errorf("unknown execute msg for account type %s", msgType)
+			}
 
-				funds, err := maybeFunds(cmd.Flags())
-				if err != nil {
-					return err
-				}
+			protoMsg, err := msgSchema.UnmarshalJSONString(msgJSON)
+			if err != nil {
+				return err
+			}
 
-				return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), &accountstypes.MsgExecute{
-					Sender:  clientCtx.From,
-					Address: "",
-					Message: nil,
-					Funds:   nil,
-				})
-			},
-		}
+			funds, err := maybeFunds(cmd.Flags())
+			if err != nil {
+				return err
+			}
 
-		cmd.Flags().String(FundsFlagName, "", "optional funds to send in deploy and execute [Coins string]")
-		return cmd
-	*/
-	panic("impl")
+			anyMsg, err := codectypes.NewAnyWithValue(protoMsg)
+			if err != nil {
+				return err
+			}
+
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), &accountstypes.MsgExecute{
+				Sender:  clientCtx.From,
+				Address: args[0],
+				Message: anyMsg,
+				Funds:   funds,
+			})
+		},
+	}
+
+	cmd.Flags().String(FundsFlagName, "", "optional funds to send in deploy and execute [Coins string]")
+	return cmd
+
 }
 
 func maybeFunds(flags *pflag.FlagSet) (sdk.Coins, error) {
