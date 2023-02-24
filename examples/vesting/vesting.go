@@ -17,6 +17,7 @@ func NewAccount(sb *collections.SchemaBuilder) Account {
 		VestedAmount:     collections.NewItem(sb, collections.NewPrefix(2), "vested_amount", sdk.IntValue),
 		StartTime:        collections.NewItem(sb, collections.NewPrefix(3), "start_time", sdk.TimeValue),
 		UnlocksPerSecond: collections.NewItem(sb, collections.NewPrefix(4), "unlocks_per_second", sdk.IntValue),
+		WithdrawnAmount:  collections.NewItem(sb, collections.NewPrefix(5), "withdrawn_amount", sdk.IntValue),
 	}
 }
 
@@ -32,18 +33,15 @@ type Account struct {
 func (a Account) Init(ctx *sdk.Context, msg v1.Init) (*sdk.InitResponse, error) {
 	// check funds
 	if len(ctx.Funds) != 1 {
-		return nil, fmt.Errorf("only one coin per vested account")
+		return nil, fmt.Errorf("only one coin per vested account, got: %s", ctx.Funds)
 	}
 	vestedCoin := ctx.Funds[0]
-	if *msg.Duration <= 0 {
+	if msg.Duration <= 0 {
 		return nil, fmt.Errorf("invalid duration")
 	}
 
 	// check time
-	if msg.StartTime.Before(ctx.BlockTime()) {
-		return nil, fmt.Errorf("cannot start vesting account in the past")
-	}
-	err := a.StartTime.Set(ctx, *msg.StartTime)
+	err := a.StartTime.Set(ctx, ctx.BlockTime().Add(msg.StartAfter))
 	if err != nil {
 		return nil, err
 	}

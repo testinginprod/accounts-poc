@@ -2,7 +2,7 @@ package sdk
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/gogoproto/proto"
+	"github.com/gogo/protobuf/proto"
 )
 
 type AccountMsg struct {

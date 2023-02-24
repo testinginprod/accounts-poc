@@ -7,7 +7,7 @@ import (
 	"cosmossdk.io/collections"
 	"cosmossdk.io/core/store"
 	"fmt"
-	"github.com/cosmos/gogoproto/proto"
+	"github.com/gogo/protobuf/proto"
 )
 
 type Accounts []func(sb *collections.SchemaBuilder) (*InternalAccount, error)

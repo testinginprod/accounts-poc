@@ -45835,6 +45835,11 @@ definitions:
   accounts.accounts.Params:
     type: object
     description: Params defines the parameters for the module.
+  accounts.accounts.QueryAccountKindResponse:
+    type: object
+    properties:
+      kind:
+        type: string
   accounts.accounts.QueryParamsResponse:
     type: object
     properties:

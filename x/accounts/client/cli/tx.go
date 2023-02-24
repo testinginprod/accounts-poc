@@ -1,11 +1,11 @@
 package cli
 
 import (
+	"accounts/utils"
 	"accounts/x/accounts/keeper"
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
-	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	FundsFlagName = "flags"
+	FundsFlagName = "funds"
 )
 
 // GetTxCmd returns the transaction commands for this module
@@ -58,7 +58,7 @@ func GetDeployCmd(schemas map[string]*keeper.Schema) *cobra.Command {
 				return fmt.Errorf("encoding error: %s", err)
 			}
 
-			anyMsg, err := codectypes.NewAnyWithValue(msg)
+			anyMsg, err := utils.MarshalAnyBytes(msg)
 			if err != nil {
 				return err
 			}
@@ -112,7 +112,7 @@ func GetExecuteCmd(schemas map[string]*keeper.Schema) *cobra.Command {
 
 			protoMsg, err := msgSchema.UnmarshalJSONString(msgJSON)
 			if err != nil {
-				return err
+				return fmt.Errorf("message construction: %w", err)
 			}
 
 			funds, err := maybeFunds(cmd.Flags())
@@ -120,7 +120,7 @@ func GetExecuteCmd(schemas map[string]*keeper.Schema) *cobra.Command {
 				return err
 			}
 
-			anyMsg, err := codectypes.NewAnyWithValue(protoMsg)
+			anyMsg, err := utils.MarshalAnyBytes(protoMsg)
 			if err != nil {
 				return err
 			}

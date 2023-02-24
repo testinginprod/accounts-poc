@@ -1,14 +1,12 @@
 package keeper
 
 import (
+	"accounts/utils"
 	"accounts/x/accounts/types"
 	"context"
 	"fmt"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/gogoproto/proto"
-	prototypes "github.com/cosmos/gogoproto/types"
-	"reflect"
 )
 
 type msgServer struct {
@@ -21,12 +19,14 @@ func (m msgServer) Deploy(ctx context.Context, deploy *types.MsgDeploy) (*types.
 		return nil, err
 	}
 
-	initMsg, err := unmarshalAny(deploy.InitMessage)
+	initMsg, err := utils.UnmarshalAnyBytes(deploy.InitMessage)
 	if err != nil {
 		return nil, fmt.Errorf("unmarshal any error: %w", err)
 	}
 
-	accountAddr, accountID, data, err := m.k.Deploy(sdk.UnwrapSDKContext(ctx), deploy.Kind, addr, deploy.Funds, initMsg)
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+
+	accountAddr, accountID, data, err := m.k.Deploy(sdkCtx, deploy.Kind, addr, deploy.Funds, initMsg)
 	if err != nil {
 		return nil, err
 	}
@@ -39,6 +39,8 @@ func (m msgServer) Deploy(ctx context.Context, deploy *types.MsgDeploy) (*types.
 			return nil, err
 		}
 	}
+
+	sdkCtx.EventManager().EmitEvent(sdk.NewEvent("account_deployed", sdk.NewAttribute("address", accountAddr.String())))
 
 	return &types.MsgDeployResponse{
 		Address: accountAddr.String(),
@@ -58,7 +60,7 @@ func (m msgServer) Execute(ctx context.Context, execute *types.MsgExecute) (*typ
 		return nil, err
 	}
 
-	executeMsg, err := unmarshalAny(execute.Message)
+	executeMsg, err := utils.UnmarshalAnyBytes(execute.Message)
 	if err != nil {
 		return nil, err
 	}
@@ -86,17 +88,3 @@ func NewMsgServerImpl(keeper Keeper) types.MsgServer {
 }
 
 var _ types.MsgServer = msgServer{}
-
-func unmarshalAny(any *codectypes.Any) (proto.Message, error) {
-	messageName, err := prototypes.AnyMessageName(&prototypes.Any{TypeUrl: any.TypeUrl})
-	if err != nil {
-		return nil, err
-	}
-	messageType := proto.MessageType(messageName)
-	if messageType == nil {
-		return nil, fmt.Errorf("unknown message: %s", messageName)
-	}
-
-	msg := reflect.New(messageType.Elem()).Interface().(proto.Message)
-	return msg, proto.Unmarshal(any.Value, msg)
-}

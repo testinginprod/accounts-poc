@@ -10,8 +10,8 @@ import "gogoproto/gogo.proto";
 
 message Init {
   string beneficiary = 1;
-  google.protobuf.Timestamp start_time = 2 [(gogoproto.stdtime) = true];
-  google.protobuf.Duration duration = 3 [(gogoproto.stdduration) = true];
+  google.protobuf.Duration start_after = 2 [(gogoproto.stdduration) = true, (gogoproto.nullable)=false];
+  google.protobuf.Duration duration = 3 [(gogoproto.stdduration) = true, (gogoproto.nullable)=false];
 }
 
 message MsgWithdrawUnlockedCoins {}

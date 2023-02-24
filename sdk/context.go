@@ -25,7 +25,7 @@ func NewContextFromSDK(ctx sdk.Context, sender Identity, self Identity, accountI
 		sdkCtx:  &ctx,
 		Store:   store,
 		Sender:  sender,
-		Funds:   nil,
+		Funds:   funds,
 		Self:    self,
 		SelfID:  accountID,
 	}
