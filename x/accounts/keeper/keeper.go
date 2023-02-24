@@ -42,9 +42,9 @@ type Keeper struct {
 	accounts map[string]*InternalAccount
 	router   MsgRouter
 
-	AccountID      collections.Sequence
-	AccountsByKind collections.Map[sdk2.Identity, string] // MAYBE use an indexed map.
-	AccountsByID   collections.Map[sdk2.Identity, uint64]
+	AccountNumber collections.Sequence
+	AccountsKind  collections.Map[sdk2.Identity, string] // MAYBE use an indexed map.
+	AccountsID    collections.Map[sdk2.Identity, uint64]
 }
 
 func NewKeeper(
@@ -79,15 +79,15 @@ func NewKeeper(
 	}
 
 	return &Keeper{
-		cdc:            cdc,
-		storeKey:       storeKey,
-		memKey:         memKey,
-		paramstore:     ps,
-		accounts:       accMap,
-		router:         router,
-		AccountID:      collections.NewSequence(moduleSchema, AccountIDPrefix, "account_id"),
-		AccountsByKind: collections.NewMap(moduleSchema, AccountsByKindPrefix, "accounts_by_kind", sdk2.IdentityKey, collections.StringValue),
-		AccountsByID:   collections.NewMap(moduleSchema, AccountsByIDPrefix, "accounts_by_id", sdk2.IdentityKey, collections.Uint64Value),
+		cdc:           cdc,
+		storeKey:      storeKey,
+		memKey:        memKey,
+		paramstore:    ps,
+		accounts:      accMap,
+		router:        router,
+		AccountNumber: collections.NewSequence(moduleSchema, AccountIDPrefix, "account_id"),
+		AccountsKind:  collections.NewMap(moduleSchema, AccountsByKindPrefix, "accounts_by_kind", sdk2.IdentityKey, collections.StringValue),
+		AccountsID:    collections.NewMap(moduleSchema, AccountsByIDPrefix, "accounts_by_id", sdk2.IdentityKey, collections.Uint64Value),
 	}
 }
 
@@ -101,7 +101,7 @@ func (k Keeper) Deploy(ctx sdk.Context, kind string, deployer sdk.AccAddress, fu
 		return nil, 0, nil, fmt.Errorf("unknown account kind")
 	}
 
-	accountID, err := k.AccountID.Next(ctx)
+	accountID, err := k.AccountNumber.Next(ctx)
 	if err != nil {
 		return nil, 0, nil, err
 	}
@@ -119,10 +119,10 @@ func (k Keeper) Deploy(ctx sdk.Context, kind string, deployer sdk.AccAddress, fu
 		return nil, 0, nil, err
 	}
 
-	if err = k.AccountsByKind.Set(ctx, accountAddr, kind); err != nil {
+	if err = k.AccountsKind.Set(ctx, accountAddr, kind); err != nil {
 		return nil, 0, nil, err
 	}
-	if err = k.AccountsByID.Set(ctx, accountAddr, accountID); err != nil {
+	if err = k.AccountsID.Set(ctx, accountAddr, accountID); err != nil {
 		return nil, 0, nil, err
 	}
 
@@ -130,7 +130,7 @@ func (k Keeper) Deploy(ctx sdk.Context, kind string, deployer sdk.AccAddress, fu
 }
 
 func (k Keeper) Execute(ctx sdk.Context, from sdk2.Identity, to sdk2.Identity, funds sdk2.Coins, msg proto.Message) (proto.Message, error) {
-	kind, err := k.AccountsByKind.Get(ctx, to)
+	kind, err := k.AccountsKind.Get(ctx, to)
 	if err != nil {
 		return nil, fmt.Errorf("unknown account identifier: %s", to)
 	}
@@ -140,7 +140,7 @@ func (k Keeper) Execute(ctx sdk.Context, from sdk2.Identity, to sdk2.Identity, f
 		return nil, fmt.Errorf("unknown account kind: %s", kind)
 	}
 
-	id, err := k.AccountsByID.Get(ctx, from)
+	id, err := k.AccountsID.Get(ctx, from)
 	if err != nil {
 		return nil, err
 	}

@@ -18,14 +18,14 @@ func (a AccountsMap) Schemas() map[string]*Schema {
 	return schemas
 }
 
-func newInitMsgSchema[IM any, PIM sdk.Encodable[IM]]() *initMsgSchema {
-	return &initMsgSchema{
-		EncodeFromJSONToProto: func(jsonBytes []byte) (proto.Message, error) {
+func newInitMsgSchema[IM any, PIM sdk.Encodable[IM]]() *msgSchema {
+	return &msgSchema{
+		UnmarshalJSONBytes: func(jsonBytes []byte) (proto.Message, error) {
 			x := PIM(new(IM))
 			err := jsonpb.Unmarshal(bytes.NewReader(jsonBytes), x)
 			return x, err
 		},
-		EncodeFromJSONStringToProto: func(jsonString string) (proto.Message, error) {
+		UnmarshalJSONString: func(jsonString string) (proto.Message, error) {
 			x := PIM(new(IM))
 			err := jsonpb.UnmarshalString(jsonString, x)
 			return x, err
@@ -33,16 +33,16 @@ func newInitMsgSchema[IM any, PIM sdk.Encodable[IM]]() *initMsgSchema {
 	}
 }
 
-type initMsgSchema struct {
-	EncodeFromJSONToProto       func(jsonBytes []byte) (proto.Message, error)
-	EncodeFromJSONStringToProto func(jsonString string) (proto.Message, error)
+type msgSchema struct {
+	UnmarshalJSONBytes  func(jsonBytes []byte) (proto.Message, error)
+	UnmarshalJSONString func(jsonString string) (proto.Message, error)
 }
 
 type Schema struct {
-	InitMsg  *initMsgSchema
-	messages interface{}
-	queries  interface{}
-	state    *collections.Schema
+	InitMsg     *msgSchema
+	ExecuteMsgs map[string]*sdk.MsgSchema
+	queries     map[string]interface{}
+	state       *collections.Schema
 }
 
 type runtime struct {

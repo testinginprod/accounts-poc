@@ -41,6 +41,7 @@ func AccountsKeeper(t testing.TB, accounts keeper.Accounts) (*keeper.Keeper, sdk
 		storeKey,
 		memStoreKey,
 		paramsSubspace,
+		nil,
 		accounts,
 	)
 

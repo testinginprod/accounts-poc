@@ -25,14 +25,20 @@ func RegisterExecuteHandler[T any, PT Encodable[T]](router *ExecuteRouter, handl
 	}
 
 	router.handlers[name] = h
+	router.schemas[name] = NewMsgSchema[T, PT]()
+
 }
 
 func NewExecuteRouter() *ExecuteRouter {
-	return &ExecuteRouter{handlers: map[string]func(ctx *Context, msg proto.Message) (*ExecuteResponse, error){}}
+	return &ExecuteRouter{
+		handlers: map[string]func(ctx *Context, msg proto.Message) (*ExecuteResponse, error){},
+		schemas:  map[string]*MsgSchema{},
+	}
 }
 
 type ExecuteRouter struct {
 	handlers map[string]func(ctx *Context, msg proto.Message) (*ExecuteResponse, error)
+	schemas  map[string]*MsgSchema
 }
 
 func (e *ExecuteRouter) Handler() func(ctx *Context, msg proto.Message) (*ExecuteResponse, error) {
@@ -45,6 +51,8 @@ func (e *ExecuteRouter) Handler() func(ctx *Context, msg proto.Message) (*Execut
 		return handler(ctx, msg)
 	}
 }
+
+func (e *ExecuteRouter) Schemas() map[string]*MsgSchema { return e.schemas }
 
 func NewQueryRouter() *QueryRouter {
 	return &QueryRouter{handlers: map[string]func(ctx *Context, msg proto.Message) (proto.Message, error){}}

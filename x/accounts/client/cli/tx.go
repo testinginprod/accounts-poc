@@ -35,6 +35,7 @@ func GetTxCmd(schemas map[string]*keeper.Schema) *cobra.Command {
 }
 
 func GetDeployCmd(schemas map[string]*keeper.Schema) *cobra.Command {
+
 	cmd := &cobra.Command{
 		Use:  "deploy [account-type] [init-msg-json]",
 		Args: cobra.ExactArgs(2),
@@ -51,7 +52,7 @@ func GetDeployCmd(schemas map[string]*keeper.Schema) *cobra.Command {
 			if !exists {
 				return fmt.Errorf("unkown account type %s", accountType)
 			}
-			msg, err := accountSchema.InitMsg.EncodeFromJSONStringToProto(initMsgJSON)
+			msg, err := accountSchema.InitMsg.UnmarshalJSONString(initMsgJSON)
 			if err != nil {
 				return err
 			}
@@ -82,7 +83,7 @@ func GetDeployCmd(schemas map[string]*keeper.Schema) *cobra.Command {
 func GetExecuteCmd(schemas map[string]*keeper.Schema) *cobra.Command {
 	/*
 		cmd := &cobra.Command{
-			Use: "execute [contract-address] [type] [json]",
+			Use:  "execute [contract-address] [type] [json]",
 			Args: cobra.ExactArgs(3),
 			RunE: func(cmd *cobra.Command, args []string) error {
 				clientCtx, err := client.GetClientTxContext(cmd)
@@ -90,12 +91,19 @@ func GetExecuteCmd(schemas map[string]*keeper.Schema) *cobra.Command {
 					return err
 				}
 
+				// TODO GET ACCOUNT TYPE
+
 				msgType := args[1]
 				msgJSON := args[2]
 
 				accountSchema, exists := schemas[accountType]
 				if !exists {
 					return fmt.Errorf("unkown account type %s", accountType)
+				}
+
+				msgSchema, exists := accountSchema.ExecuteMsgs[msgType]
+				if !exists {
+					return fmt.Errorf("unknown execute msg for account type %s", msgType)
 				}
 
 				funds, err := maybeFunds(cmd.Flags())
@@ -113,6 +121,7 @@ func GetExecuteCmd(schemas map[string]*keeper.Schema) *cobra.Command {
 		}
 
 		cmd.Flags().String(FundsFlagName, "", "optional funds to send in deploy and execute [Coins string]")
+		return cmd
 	*/
 	panic("impl")
 }

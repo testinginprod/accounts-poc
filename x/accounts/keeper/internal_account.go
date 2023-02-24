@@ -54,10 +54,10 @@ func NewInternalAccount[IM any, PIM sdk.Encodable[IM], A sdk.Account[IM, PIM]](s
 
 		schema: func() *Schema {
 			return &Schema{
-				InitMsg:  newInitMsgSchema[IM, PIM](),
-				messages: nil,
-				queries:  nil,
-				state:    &stateSchema,
+				InitMsg:     newInitMsgSchema[IM, PIM](),
+				ExecuteMsgs: executeHandler.Schemas(),
+				queries:     nil,
+				state:       &stateSchema,
 			}
 		},
 	}, nil
