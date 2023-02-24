@@ -5,7 +5,7 @@ const (
 	ModuleName = "accounts"
 
 	// StoreKey defines the primary module store key
-	StoreKey = ModuleName
+	StoreKey = "something"
 
 	// RouterKey defines the module's message routing key
 	RouterKey = ModuleName

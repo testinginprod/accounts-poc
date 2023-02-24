@@ -7,7 +7,7 @@ import (
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/gogoproto/proto"
-	types2 "github.com/gogo/protobuf/types"
+	prototypes "github.com/cosmos/gogoproto/types"
 	"reflect"
 )
 
@@ -23,7 +23,7 @@ func (m msgServer) Deploy(ctx context.Context, deploy *types.MsgDeploy) (*types.
 
 	initMsg, err := unmarshalAny(deploy.InitMessage)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("unmarshal any error: %w", err)
 	}
 
 	accountAddr, accountID, data, err := m.k.Deploy(sdk.UnwrapSDKContext(ctx), deploy.Kind, addr, deploy.Funds, initMsg)
@@ -88,7 +88,7 @@ func NewMsgServerImpl(keeper Keeper) types.MsgServer {
 var _ types.MsgServer = msgServer{}
 
 func unmarshalAny(any *codectypes.Any) (proto.Message, error) {
-	messageName, err := types2.AnyMessageName(&types2.Any{TypeUrl: any.TypeUrl})
+	messageName, err := prototypes.AnyMessageName(&prototypes.Any{TypeUrl: any.TypeUrl})
 	if err != nil {
 		return nil, err
 	}

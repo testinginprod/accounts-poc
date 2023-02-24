@@ -10,7 +10,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-	"github.com/gogo/protobuf/proto"
+	"github.com/cosmos/gogoproto/proto"
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
@@ -39,7 +39,7 @@ type Keeper struct {
 	memKey     storetypes.StoreKey
 	paramstore paramtypes.Subspace
 
-	accounts map[string]*InternalAccount
+	accounts AccountsMap
 	router   MsgRouter
 
 	AccountNumber collections.Sequence
@@ -225,4 +225,8 @@ func (k Keeper) accountStore(ctx sdk.Context, id uint64) store.KVStore {
 			append(accountsStoragePrefix, sdk.Uint64ToBigEndian(id)...),
 		),
 	)
+}
+
+func (k Keeper) Accounts() AccountsMap {
+	return k.accounts
 }

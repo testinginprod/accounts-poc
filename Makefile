@@ -1,5 +1,7 @@
 DOCKER := $(shell which docker)
 
+.PHONY: build
+
 ###############################################################################
 ###                                Protobuf                                 ###
 ###############################################################################
@@ -26,3 +28,17 @@ proto-lint:
 
 proto-check-breaking:
 	@$(protoImage) buf breaking --against $(HTTPS_GIT)#branch=main
+
+build:
+	GOARCH=arm64 GOOS=linux go build -o ./build/accountsd ./cmd/accountsd
+
+docker: build
+	docker container rm "localnet" -f
+	docker build -t accounts:test .
+	docker run -d --name "localnet" -t accounts:test
+	docker exec -it "localnet" sh
+
+exp: build
+	docker container rm "localnet"
+	docker build --no-cache -t accounts:test .
+	docker run -it --name "localnet" -t accounts:test

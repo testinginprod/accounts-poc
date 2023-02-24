@@ -11,7 +11,7 @@ func (m *MsgDeploy) ValidateBasic() error {
 	}
 
 	if _, err := sdk.AccAddressFromBech32(m.Sender); err != nil {
-		return err
+		return fmt.Errorf("invalid sender '%s': %w", m.Sender, err)
 	}
 	// TODO
 	return nil

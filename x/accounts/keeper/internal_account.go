@@ -2,12 +2,35 @@ package keeper
 
 import (
 	"accounts/sdk"
+	"accounts/utils"
+	"context"
 	"cosmossdk.io/collections"
+	"cosmossdk.io/core/store"
 	"fmt"
-	"github.com/gogo/protobuf/proto"
+	"github.com/cosmos/gogoproto/proto"
 )
 
-type Accounts = []func(sb *collections.SchemaBuilder) (*InternalAccount, error)
+type Accounts []func(sb *collections.SchemaBuilder) (*InternalAccount, error)
+
+func (a Accounts) AccountsMap() AccountsMap {
+	accMap := AccountsMap{}
+	for _, accCreator := range a {
+		accountSchema := collections.NewSchemaBuilder(utils.KVStoreOpenerFunc(func(ctx context.Context) store.KVStore {
+			return ctx.(*sdk.Context).Store
+		}))
+
+		account, err := accCreator(accountSchema)
+		if err != nil {
+			panic(err)
+		}
+		name := account.name()
+		if _, exists := accMap[name]; exists {
+			panic("already registered account " + name)
+		}
+		accMap[name] = account
+	}
+	return accMap
+}
 
 type InternalAccount struct {
 	name    func() string

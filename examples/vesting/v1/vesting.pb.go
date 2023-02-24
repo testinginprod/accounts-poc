@@ -6,9 +6,9 @@ package v1
 import (
 	fmt "fmt"
 	github_com_cosmos_cosmos_sdk_types "github.com/cosmos/cosmos-sdk/types"
-	_ "github.com/cosmos/gogoproto/gogoproto"
-	proto "github.com/cosmos/gogoproto/proto"
-	github_com_cosmos_gogoproto_types "github.com/cosmos/gogoproto/types"
+	_ "github.com/gogo/protobuf/gogoproto"
+	proto "github.com/gogo/protobuf/proto"
+	github_com_gogo_protobuf_types "github.com/gogo/protobuf/types"
 	_ "google.golang.org/protobuf/types/known/durationpb"
 	_ "google.golang.org/protobuf/types/known/timestamppb"
 	io "io"
@@ -259,7 +259,7 @@ func (m *Init) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	var l int
 	_ = l
 	if m.Duration != nil {
-		n1, err1 := github_com_cosmos_gogoproto_types.StdDurationMarshalTo(*m.Duration, dAtA[i-github_com_cosmos_gogoproto_types.SizeOfStdDuration(*m.Duration):])
+		n1, err1 := github_com_gogo_protobuf_types.StdDurationMarshalTo(*m.Duration, dAtA[i-github_com_gogo_protobuf_types.SizeOfStdDuration(*m.Duration):])
 		if err1 != nil {
 			return 0, err1
 		}
@@ -269,7 +269,7 @@ func (m *Init) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		dAtA[i] = 0x1a
 	}
 	if m.StartTime != nil {
-		n2, err2 := github_com_cosmos_gogoproto_types.StdTimeMarshalTo(*m.StartTime, dAtA[i-github_com_cosmos_gogoproto_types.SizeOfStdTime(*m.StartTime):])
+		n2, err2 := github_com_gogo_protobuf_types.StdTimeMarshalTo(*m.StartTime, dAtA[i-github_com_gogo_protobuf_types.SizeOfStdTime(*m.StartTime):])
 		if err2 != nil {
 			return 0, err2
 		}
@@ -399,11 +399,11 @@ func (m *Init) Size() (n int) {
 		n += 1 + l + sovVesting(uint64(l))
 	}
 	if m.StartTime != nil {
-		l = github_com_cosmos_gogoproto_types.SizeOfStdTime(*m.StartTime)
+		l = github_com_gogo_protobuf_types.SizeOfStdTime(*m.StartTime)
 		n += 1 + l + sovVesting(uint64(l))
 	}
 	if m.Duration != nil {
-		l = github_com_cosmos_gogoproto_types.SizeOfStdDuration(*m.Duration)
+		l = github_com_gogo_protobuf_types.SizeOfStdDuration(*m.Duration)
 		n += 1 + l + sovVesting(uint64(l))
 	}
 	return n
@@ -539,7 +539,7 @@ func (m *Init) Unmarshal(dAtA []byte) error {
 			if m.StartTime == nil {
 				m.StartTime = new(time.Time)
 			}
-			if err := github_com_cosmos_gogoproto_types.StdTimeUnmarshal(m.StartTime, dAtA[iNdEx:postIndex]); err != nil {
+			if err := github_com_gogo_protobuf_types.StdTimeUnmarshal(m.StartTime, dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -575,7 +575,7 @@ func (m *Init) Unmarshal(dAtA []byte) error {
 			if m.Duration == nil {
 				m.Duration = new(time.Duration)
 			}
-			if err := github_com_cosmos_gogoproto_types.StdDurationUnmarshal(m.Duration, dAtA[iNdEx:postIndex]); err != nil {
+			if err := github_com_gogo_protobuf_types.StdDurationUnmarshal(m.Duration, dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

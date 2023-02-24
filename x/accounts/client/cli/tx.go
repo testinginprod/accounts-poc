@@ -3,6 +3,7 @@ package cli
 import (
 	"accounts/x/accounts/keeper"
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -50,11 +51,11 @@ func GetDeployCmd(schemas map[string]*keeper.Schema) *cobra.Command {
 
 			accountSchema, exists := schemas[accountType]
 			if !exists {
-				return fmt.Errorf("unkown account type %s", accountType)
+				return fmt.Errorf("unkown account type %s, %#v", accountType, schemas)
 			}
 			msg, err := accountSchema.InitMsg.UnmarshalJSONString(initMsgJSON)
 			if err != nil {
-				return err
+				return fmt.Errorf("encoding error: %s", err)
 			}
 
 			anyMsg, err := codectypes.NewAnyWithValue(msg)
@@ -68,7 +69,7 @@ func GetDeployCmd(schemas map[string]*keeper.Schema) *cobra.Command {
 			}
 
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), &accountstypes.MsgDeploy{
-				Sender:      clientCtx.From,
+				Sender:      clientCtx.FromAddress.String(),
 				Kind:        accountType,
 				InitMessage: anyMsg,
 				Funds:       funds,
@@ -77,6 +78,7 @@ func GetDeployCmd(schemas map[string]*keeper.Schema) *cobra.Command {
 	}
 
 	cmd.Flags().String(FundsFlagName, "", "optional funds to send in deploy and execute [Coins string]")
+	flags.AddTxFlagsToCmd(cmd)
 	return cmd
 }
 
@@ -100,7 +102,7 @@ func GetExecuteCmd(schemas map[string]*keeper.Schema) *cobra.Command {
 
 			accountSchema, exists := schemas[accTypeResp.Kind]
 			if !exists {
-				return fmt.Errorf("unkown account type %s", accTypeResp.Kind)
+				return fmt.Errorf("unkown account type %s, got: %#v", accTypeResp.Kind, schemas)
 			}
 
 			msgSchema, exists := accountSchema.ExecuteMsgs[msgType]
@@ -124,7 +126,7 @@ func GetExecuteCmd(schemas map[string]*keeper.Schema) *cobra.Command {
 			}
 
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), &accountstypes.MsgExecute{
-				Sender:  clientCtx.From,
+				Sender:  clientCtx.FromAddress.String(),
 				Address: args[0],
 				Message: anyMsg,
 				Funds:   funds,
@@ -133,6 +135,7 @@ func GetExecuteCmd(schemas map[string]*keeper.Schema) *cobra.Command {
 	}
 
 	cmd.Flags().String(FundsFlagName, "", "optional funds to send in deploy and execute [Coins string]")
+	flags.AddTxFlagsToCmd(cmd)
 	return cmd
 
 }
