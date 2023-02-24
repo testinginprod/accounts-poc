@@ -14,6 +14,8 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/accounts/accounts/params";
   }
+
+  rpc AccountKind(QueryAccountKindRequest) returns( QueryAccountKindResponse) {};
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -23,4 +25,13 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAccountKindRequest {
+  string address = 1;
+  string id = 2;
+}
+
+message QueryAccountKindResponse {
+  string kind = 1;
 }
