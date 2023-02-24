@@ -14,7 +14,7 @@ type InternalAccount struct {
 	init    func(ctx *sdk.Context, msg proto.Message) (*sdk.InitResponse, error)
 	execute func(ctx *sdk.Context, msg proto.Message) (*sdk.ExecuteResponse, error)
 	query   func(ctx *sdk.Context, msg proto.Message) (proto.Message, error)
-	schema  func() *schema
+	schema  func() *Schema
 }
 
 func WithAccount[IM any, PIM sdk.Encodable[IM], A sdk.Account[IM, PIM]](name string, accCreator func(sb *collections.SchemaBuilder) A) func(sb *collections.SchemaBuilder) (*InternalAccount, error) {
@@ -52,8 +52,9 @@ func NewInternalAccount[IM any, PIM sdk.Encodable[IM], A sdk.Account[IM, PIM]](s
 
 		query: queryHandler.Handler(),
 
-		schema: func() *schema {
-			return &schema{
+		schema: func() *Schema {
+			return &Schema{
+				InitMsg:  newInitMsgSchema[IM, PIM](),
 				messages: nil,
 				queries:  nil,
 				state:    &stateSchema,
