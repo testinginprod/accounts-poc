@@ -35,15 +35,15 @@ func (a Account) Init(ctx *sdk.Context, msg v1.Init) (*sdk.InitResponse, error) 
 		return nil, fmt.Errorf("only one coin per vested account")
 	}
 	vestedCoin := ctx.Funds[0]
-	if msg.Duration.Seconds <= 0 {
+	if *msg.Duration <= 0 {
 		return nil, fmt.Errorf("invalid duration")
 	}
 
 	// check time
-	if msg.StartTime.AsTime().Before(ctx.BlockTime()) {
+	if msg.StartTime.Before(ctx.BlockTime()) {
 		return nil, fmt.Errorf("cannot start vesting account in the past")
 	}
-	err := a.StartTime.Set(ctx, msg.StartTime.AsTime())
+	err := a.StartTime.Set(ctx, *msg.StartTime)
 	if err != nil {
 		return nil, err
 	}
@@ -59,12 +59,7 @@ func (a Account) Init(ctx *sdk.Context, msg v1.Init) (*sdk.InitResponse, error) 
 		return nil, err
 	}
 
-	// check duration
-	if msg.Duration.Seconds <= 0 {
-		return nil, fmt.Errorf("invalid duration")
-	}
-
-	unlocksPerSecond := vestedCoin.Amount.QuoRaw(msg.Duration.Seconds)
+	unlocksPerSecond := vestedCoin.Amount.QuoRaw(msg.Duration.Milliseconds() / 1000)
 	err = a.UnlocksPerSecond.Set(ctx, unlocksPerSecond)
 	if err != nil {
 		return nil, err

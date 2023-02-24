@@ -507,6 +507,7 @@ func New(
 		keys[accountsmoduletypes.StoreKey],
 		keys[accountsmoduletypes.MemStoreKey],
 		app.GetSubspace(accountsmoduletypes.ModuleName),
+		app.MsgServiceRouter(),
 		Accounts(),
 	)
 	accountsModule := accountsmodule.NewAppModule(appCodec, app.AccountsKeeper, app.AccountKeeper, app.BankKeeper)

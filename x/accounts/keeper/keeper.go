@@ -7,7 +7,6 @@ import (
 	"cosmossdk.io/collections"
 	"cosmossdk.io/core/store"
 	"fmt"
-	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
@@ -30,6 +29,10 @@ var (
 	accountsStoragePrefix = []byte{0x1} // for versioning purposes
 )
 
+type MsgRouter interface {
+	Handler(msg sdk.Msg) func(ctx sdk.Context, req sdk.Msg) (*sdk.Result, error)
+}
+
 type Keeper struct {
 	cdc        codec.BinaryCodec
 	storeKey   storetypes.StoreKey
@@ -37,7 +40,7 @@ type Keeper struct {
 	paramstore paramtypes.Subspace
 
 	accounts map[string]*InternalAccount
-	router   *baseapp.MsgServiceRouter
+	router   MsgRouter
 
 	AccountID      collections.Sequence
 	AccountsByKind collections.Map[sdk2.Identity, string] // MAYBE use an indexed map.
@@ -49,6 +52,7 @@ func NewKeeper(
 	storeKey,
 	memKey storetypes.StoreKey,
 	ps paramtypes.Subspace,
+	router MsgRouter,
 	accounts Accounts,
 ) *Keeper {
 	// set KeyTable if it has not already been set
@@ -80,7 +84,7 @@ func NewKeeper(
 		memKey:         memKey,
 		paramstore:     ps,
 		accounts:       accMap,
-		router:         nil,
+		router:         router,
 		AccountID:      collections.NewSequence(moduleSchema, AccountIDPrefix, "account_id"),
 		AccountsByKind: collections.NewMap(moduleSchema, AccountsByKindPrefix, "accounts_by_kind", sdk2.IdentityKey, collections.StringValue),
 		AccountsByID:   collections.NewMap(moduleSchema, AccountsByIDPrefix, "accounts_by_id", sdk2.IdentityKey, collections.Uint64Value),
@@ -141,6 +145,10 @@ func (k Keeper) Execute(ctx sdk.Context, from sdk2.Identity, to sdk2.Identity, f
 		return nil, err
 	}
 
+	if err = k.depositFunds(ctx, from, to, funds); err != nil {
+		return nil, err
+	}
+
 	accCtx := sdk2.NewContextFromSDK(ctx, from, to, id, k.accountStore(ctx, id), funds)
 
 	resp, err := account.execute(accCtx, msg)
@@ -148,7 +156,49 @@ func (k Keeper) Execute(ctx sdk.Context, from sdk2.Identity, to sdk2.Identity, f
 		return nil, err
 	}
 
-	panic("wait")
+	err = k.route(ctx, to, resp.Messages())
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
+}
+
+func (k Keeper) route(ctx sdk.Context, from sdk2.Identity, resp []*sdk2.Message) error {
+	for _, msg := range resp {
+		switch {
+		case msg.IsAccountMsg():
+			accountMsg := msg.AccountMsg()
+			_, err := k.Execute(ctx, from, accountMsg.Dst, accountMsg.Funds, accountMsg.Msg)
+			if err != nil {
+				return err
+			}
+		case msg.IsModuleMsg():
+			moduleMsg := msg.ModuleMsg()
+			signers := moduleMsg.GetSigners()
+			if len(signers) != 1 {
+				return fmt.Errorf("invalid signers: wanted only 1")
+			}
+			if !signers[0].Equals(from) {
+				return fmt.Errorf("invalid signers: message can only be signed by %s, got: %s", from, signers[0].String())
+			}
+			handler := k.router.Handler(moduleMsg)
+			if handler == nil {
+				return fmt.Errorf("unknown module msg: %T", msg)
+			}
+			err := moduleMsg.ValidateBasic()
+			if err != nil {
+				return fmt.Errorf("invalid module message: %w", err)
+			}
+			_, err = handler(ctx, moduleMsg)
+			if err != nil {
+				return err
+			}
+		default:
+			return fmt.Errorf("empty message")
+		}
+	}
+	return nil
 }
 
 func (k Keeper) depositFunds(ctx sdk.Context, from sdk2.Identity, to sdk2.Identity, amount sdk2.Coins) error {

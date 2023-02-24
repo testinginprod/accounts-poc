@@ -31,6 +31,21 @@ func GetTxCmd() *cobra.Command {
 	}
 
 	// this line is used by starport scaffolding # 1
+	cmd.AddCommand(GetDeployCmd())
 
 	return cmd
+}
+
+func GetDeployCmd() *cobra.Command {
+	/*
+		return &cobra.Command{
+			Use: "deploy [account-type] [init-msg-json]",
+			Args: cobra.ExactArgs(2),
+			RunE: func(cmd *cobra.Command, args []string) error {
+				accountType := args[0]
+				initMsgJSON := args[1]
+			},
+		}
+	*/
+	panic("impl")
 }
