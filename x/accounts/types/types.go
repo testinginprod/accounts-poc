@@ -26,7 +26,7 @@ func (m *MsgExecute) ValidateBasic() error {
 		return fmt.Errorf("invalid msg")
 	}
 
-	if _, err := sdk.AccAddressFromBech32(m.Address); err != nil {
+	if _, err := sdk.AccAddressFromBech32(m.Sender); err != nil {
 		return err
 	}
 
@@ -35,5 +35,5 @@ func (m *MsgExecute) ValidateBasic() error {
 }
 
 func (m *MsgExecute) GetSigners() []sdk.AccAddress {
-	return []sdk.AccAddress{sdk.MustAccAddressFromBech32(m.Address)}
+	return []sdk.AccAddress{sdk.MustAccAddressFromBech32(m.Sender)}
 }

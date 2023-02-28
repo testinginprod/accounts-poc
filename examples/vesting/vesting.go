@@ -97,16 +97,16 @@ func (a Account) WithdrawCoins(ctx *sdk.Context) (*sdk.ExecuteResponse, error) {
 	// check if we're after vesting start time
 	startTime, err := a.StartTime.Get(ctx)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%w: start time", err)
 	}
 
 	if ctx.BlockTime().Before(startTime) {
 		return nil, fmt.Errorf("cannot withdraw coins before vesting start time")
 	}
 
-	withdrawable, err := a.WithdrawableCoins(ctx)
+	withdrawable, err := a.WithrawableAmount(ctx)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%w: withdrawable", err)
 	}
 	if withdrawable.IsZero() {
 		return nil, fmt.Errorf("no coins to withdraw")
@@ -115,7 +115,7 @@ func (a Account) WithdrawCoins(ctx *sdk.Context) (*sdk.ExecuteResponse, error) {
 	// update withdrawn amount
 	withdrawnSoFar, err := a.WithdrawnAmount.Get(ctx)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%w: withdawn amount", err)
 	}
 
 	err = a.WithdrawnAmount.Set(ctx, withdrawnSoFar.Add(withdrawable))
@@ -128,17 +128,21 @@ func (a Account) WithdrawCoins(ctx *sdk.Context) (*sdk.ExecuteResponse, error) {
 		return nil, err
 	}
 
+	withdrawableCoins := sdk.NewCoin(denom, withdrawable)
+
+	ctx.WithEvent("transferred_coins", sdk.Attribute{Key: "coins", Value: withdrawableCoins.String()})
+
 	return new(sdk.ExecuteResponse).
 		WithCosmoSDKMsg(
 			&banktypes.MsgSend{
 				FromAddress: ctx.Self.String(),
 				ToAddress:   beneficiary.String(),
-				Amount:      sdk.NewCoins(sdk.NewCoin(denom, withdrawable)),
+				Amount:      sdk.NewCoins(withdrawableCoins),
 			},
 		), nil
 }
 
-func (a Account) WithdrawableCoins(ctx *sdk.Context) (math.Int, error) {
+func (a Account) WithrawableAmount(ctx *sdk.Context) (math.Int, error) {
 	withdrawnCoins, err := a.WithdrawnAmount.Get(ctx)
 	if err != nil {
 		return math.Int{}, err
@@ -186,7 +190,7 @@ func (a Account) RegisterQueryHandler(r *sdk.QueryRouter) {
 			return v1.QueryVestingStatusResponse{}, err
 		}
 
-		withdrawable, err := a.WithdrawableCoins(ctx)
+		withdrawable, err := a.WithrawableAmount(ctx)
 		if err != nil {
 			return v1.QueryVestingStatusResponse{}, err
 		}

@@ -18,8 +18,8 @@ func RegisterExecuteHandler[T any, PT Encodable[T]](router *ExecuteRouter, handl
 	name := proto.MessageName(PT(new(T)))
 	h := func(ctx *Context, m proto.Message) (*ExecuteResponse, error) {
 		concrete, ok := m.(PT)
-		if ok {
-			return nil, fmt.Errorf("routing error")
+		if !ok {
+			return nil, fmt.Errorf("routing error, wanted %s, got: %s", name, proto.MessageName(m))
 		}
 		return handler(ctx, *concrete)
 	}

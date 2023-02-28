@@ -92,7 +92,7 @@ func GetExecuteCmd(schemas map[string]*keeper.Schema) *cobra.Command {
 				return err
 			}
 
-			accTypeResp, err := accountstypes.NewQueryClient(clientCtx.GRPCClient).AccountKind(cmd.Context(), &accountstypes.QueryAccountKindRequest{Address: args[0]})
+			accTypeResp, err := accountstypes.NewQueryClient(clientCtx).AccountKind(cmd.Context(), &accountstypes.QueryAccountKindRequest{Address: args[0]})
 			if err != nil {
 				return err
 			}

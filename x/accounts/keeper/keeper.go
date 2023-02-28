@@ -140,9 +140,9 @@ func (k Keeper) Execute(ctx sdk.Context, from sdk2.Identity, to sdk2.Identity, f
 		return nil, fmt.Errorf("unknown account kind: %s", kind)
 	}
 
-	id, err := k.AccountsID.Get(ctx, from)
+	id, err := k.AccountsID.Get(ctx, to)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("accounts ID: %w", err)
 	}
 
 	if err = k.depositFunds(ctx, from, to, funds); err != nil {
@@ -153,12 +153,12 @@ func (k Keeper) Execute(ctx sdk.Context, from sdk2.Identity, to sdk2.Identity, f
 
 	resp, err := account.execute(accCtx, msg)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%w: execute", err)
 	}
 
 	err = k.route(ctx, to, resp.Messages())
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%w: route", err)
 	}
 
 	return nil, nil

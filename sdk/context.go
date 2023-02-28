@@ -8,7 +8,7 @@ import (
 )
 
 type Context struct {
-	context.Context // ugly hack
+	context.Context // needs to implement ctx, for collections.
 	sdkCtx          *sdk.Context
 	Store           store.KVStore
 	Sender          Identity
@@ -17,7 +17,12 @@ type Context struct {
 	SelfID          uint64
 }
 
+type Attribute = sdk.Attribute
+
 func (c *Context) BlockTime() time.Time { return c.sdkCtx.BlockTime() }
+func (c *Context) WithEvent(name string, attrs ...Attribute) {
+	c.sdkCtx.EventManager().EmitEvent(sdk.NewEvent(name, attrs...))
+}
 
 func NewContextFromSDK(ctx sdk.Context, sender Identity, self Identity, accountID uint64, store store.KVStore, funds Coins) *Context {
 	return &Context{
