@@ -6,7 +6,7 @@ import (
 )
 
 type AccountMsg struct {
-	Dst   Identity
+	Dst   AccAddress
 	Msg   proto.Message
 	Funds Coins
 }
@@ -47,7 +47,7 @@ func (r *ExecuteResponse) WithCosmoSDKMsg(msg sdk.Msg) *ExecuteResponse {
 	return r
 }
 
-func (r *ExecuteResponse) WithAccountMsg(dst Identity, msg proto.Message) *ExecuteResponse {
+func (r *ExecuteResponse) WithAccountMsg(dst AccAddress, msg proto.Message) *ExecuteResponse {
 	r.messages = append(r.messages, &Message{account: &AccountMsg{
 		Dst: dst,
 		Msg: msg,

@@ -22,12 +22,12 @@ func NewAccount(sb *collections.SchemaBuilder) Account {
 }
 
 type Account struct {
-	Beneficiary      collections.Item[sdk.Identity] // Beneficiary is the holder of the vested coins.
-	VestedCoinDenom  collections.Item[string]       // VestedCoinDenom is the denom of the vested coin.
-	VestedAmount     collections.Item[math.Int]     // VestedAmount keeps track of the amount of coins that are vested
-	StartTime        collections.Item[time.Time]    // StartTime defines when the account can start withdrawing vested coins.
-	UnlocksPerSecond collections.Item[math.Int]     // UnlocksPerSecond defines how many coins unlock after each second.
-	WithdrawnAmount  collections.Item[math.Int]     // WithdrawnAmount keeps track of the amount of coins withdrawn so far.
+	Beneficiary      collections.Item[sdk.AccAddress] // Beneficiary is the holder of the vested coins.
+	VestedCoinDenom  collections.Item[string]         // VestedCoinDenom is the denom of the vested coin.
+	VestedAmount     collections.Item[math.Int]       // VestedAmount keeps track of the amount of coins that are vested
+	StartTime        collections.Item[time.Time]      // StartTime defines when the account can start withdrawing vested coins.
+	UnlocksPerSecond collections.Item[math.Int]       // UnlocksPerSecond defines how many coins unlock after each second.
+	WithdrawnAmount  collections.Item[math.Int]       // WithdrawnAmount keeps track of the amount of coins withdrawn so far.
 }
 
 func (a Account) Init(ctx *sdk.Context, msg v1.Init) (*sdk.InitResponse, error) {
@@ -47,7 +47,7 @@ func (a Account) Init(ctx *sdk.Context, msg v1.Init) (*sdk.InitResponse, error) 
 	}
 
 	// check beneficiary
-	beneficiary, err := sdk.IdentityFromString(msg.Beneficiary)
+	beneficiary, err := sdk.AccAddressFromBech32(msg.Beneficiary)
 	if err != nil {
 		return nil, err
 	}

@@ -6,7 +6,7 @@ import (
 	"github.com/gogo/protobuf/proto"
 )
 
-type Identity = sdk.AccAddress
+type AccAddress = sdk.AccAddress
 
 type Account[T any, PT Encodable[T]] interface {
 	Init(ctx *Context, t T) (*InitResponse, error)

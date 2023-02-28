@@ -15,8 +15,8 @@ type Encodable[T any] interface {
 	proto.Message
 }
 
-var IdentityFromString = sdk.AccAddressFromBech32
-var IdentityKey = codec.NewBytesKey[Identity]()
+var AccAddressFromBech32 = sdk.AccAddressFromBech32
+var IdentityKey = codec.NewBytesKey[AccAddress]()
 var IdentityValue = codec.KeyToValueCodec(IdentityKey)
 var IntValue codec.ValueCodec[math.Int] = intValueCodec{}
 var TimeKey codec.KeyCodec[time.Time] = timeKey{}

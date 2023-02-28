@@ -43,8 +43,8 @@ type Keeper struct {
 	router   MsgRouter
 
 	AccountNumber collections.Sequence
-	AccountsKind  collections.Map[sdk2.Identity, string] // MAYBE use an indexed map.
-	AccountsID    collections.Map[sdk2.Identity, uint64]
+	AccountsKind  collections.Map[sdk2.AccAddress, string] // MAYBE use an indexed map.
+	AccountsID    collections.Map[sdk2.AccAddress, uint64]
 }
 
 func NewKeeper(
@@ -129,7 +129,7 @@ func (k Keeper) Deploy(ctx sdk.Context, kind string, deployer sdk.AccAddress, fu
 	return accountAddr, accountID, nil /*TODO*/, nil
 }
 
-func (k Keeper) Execute(ctx sdk.Context, from sdk2.Identity, to sdk2.Identity, funds sdk2.Coins, msg proto.Message) (proto.Message, error) {
+func (k Keeper) Execute(ctx sdk.Context, from sdk2.AccAddress, to sdk2.AccAddress, funds sdk2.Coins, msg proto.Message) (proto.Message, error) {
 	kind, err := k.AccountsKind.Get(ctx, to)
 	if err != nil {
 		return nil, fmt.Errorf("unknown account identifier: %s", to)
@@ -164,7 +164,7 @@ func (k Keeper) Execute(ctx sdk.Context, from sdk2.Identity, to sdk2.Identity, f
 	return nil, nil
 }
 
-func (k Keeper) route(ctx sdk.Context, from sdk2.Identity, resp []*sdk2.Message) error {
+func (k Keeper) route(ctx sdk.Context, from sdk2.AccAddress, resp []*sdk2.Message) error {
 	for _, msg := range resp {
 		switch {
 		case msg.IsAccountMsg():
@@ -201,7 +201,7 @@ func (k Keeper) route(ctx sdk.Context, from sdk2.Identity, resp []*sdk2.Message)
 	return nil
 }
 
-func (k Keeper) depositFunds(ctx sdk.Context, from sdk2.Identity, to sdk2.Identity, amount sdk2.Coins) error {
+func (k Keeper) depositFunds(ctx sdk.Context, from sdk2.AccAddress, to sdk2.AccAddress, amount sdk2.Coins) error {
 	if amount.IsZero() {
 		return nil
 	}

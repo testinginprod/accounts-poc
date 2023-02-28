@@ -11,9 +11,9 @@ type Context struct {
 	context.Context // needs to implement ctx, for collections.
 	sdkCtx          *sdk.Context
 	Store           store.KVStore
-	Sender          Identity
+	Sender          AccAddress
 	Funds           Coins
-	Self            Identity
+	Self            AccAddress
 	SelfID          uint64
 }
 
@@ -24,7 +24,7 @@ func (c *Context) WithEvent(name string, attrs ...Attribute) {
 	c.sdkCtx.EventManager().EmitEvent(sdk.NewEvent(name, attrs...))
 }
 
-func NewContextFromSDK(ctx sdk.Context, sender Identity, self Identity, accountID uint64, store store.KVStore, funds Coins) *Context {
+func NewContextFromSDK(ctx sdk.Context, sender AccAddress, self AccAddress, accountID uint64, store store.KVStore, funds Coins) *Context {
 	return &Context{
 		Context: context.Background(),
 		sdkCtx:  &ctx,

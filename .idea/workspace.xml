@@ -4,15 +4,14 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fe856d3c-df8a-4839-b288-564c7432e80b" name="Changes" comment="hallelujah">
-      <change afterPath="$PROJECT_DIR$/scripts/demo.sh" afterDir="false" />
+    <list default="true" id="fe856d3c-df8a-4839-b288-564c7432e80b" name="Changes" comment="ok all works">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/examples/vesting/vesting.go" beforeDir="false" afterPath="$PROJECT_DIR$/examples/vesting/vesting.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/codec.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/codec.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sdk/context.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/context.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/responses.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/responses.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sdk/sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/sdk.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/x/accounts/client/cli/tx.go" beforeDir="false" afterPath="$PROJECT_DIR$/x/accounts/client/cli/tx.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/x/accounts/keeper/keeper.go" beforeDir="false" afterPath="$PROJECT_DIR$/x/accounts/keeper/keeper.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/x/accounts/types/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/x/accounts/types/types.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -156,7 +155,8 @@
     <MESSAGE value="execute cmd" />
     <MESSAGE value="tmp" />
     <MESSAGE value="hallelujah" />
-    <option name="LAST_COMMIT_MESSAGE" value="hallelujah" />
+    <MESSAGE value="ok all works" />
+    <option name="LAST_COMMIT_MESSAGE" value="ok all works" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
