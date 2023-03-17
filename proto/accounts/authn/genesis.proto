@@ -1,0 +1,12 @@
+syntax = "proto3";
+package accounts.authn;
+
+import "gogoproto/gogo.proto";
+import "accounts/authn/params.proto";
+
+option go_package = "accounts/x/authn/types";
+
+// GenesisState defines the authn module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+}

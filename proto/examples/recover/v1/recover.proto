@@ -1,0 +1,13 @@
+syntax="proto3";
+
+package examples.recover.v1;
+
+option go_package="accounts/examples/recover/v1";
+
+message Init {
+  string account_recoverer = 1;
+}
+
+message MsgSwapPublicKey {
+  bytes new_public_key = 1;
+}

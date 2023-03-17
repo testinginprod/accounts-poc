@@ -4,14 +4,47 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fe856d3c-df8a-4839-b288-564c7432e80b" name="Changes" comment="ok all works">
+    <list default="true" id="fe856d3c-df8a-4839-b288-564c7432e80b" name="Changes" comment="change identity to accaddress">
+      <change afterPath="$PROJECT_DIR$/proto/accounts/authn/genesis.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/proto/accounts/authn/params.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/proto/accounts/authn/query.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/proto/accounts/authn/tx.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/proto/examples/recover/v1/recover.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testutil/keeper/authn.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/client/cli/query.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/client/cli/query_params.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/client/cli/tx.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/genesis.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/genesis_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/keeper/keeper.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/keeper/msg_server.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/keeper/msg_server_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/keeper/params.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/keeper/params_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/keeper/query.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/keeper/query_params.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/keeper/query_params_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/module.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/module_simulation.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/simulation/helpers.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/types/codec.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/types/errors.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/types/expected_keepers.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/types/genesis.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/types/genesis.pb.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/types/genesis_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/types/keys.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/types/params.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/types/params.pb.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/types/query.pb.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/types/query.pb.gw.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/types/sign_handler.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/types/tx.pb.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/x/authn/types/types.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/vesting/vesting.go" beforeDir="false" afterPath="$PROJECT_DIR$/examples/vesting/vesting.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sdk/codec.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/codec.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sdk/context.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/context.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sdk/responses.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/responses.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sdk/sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/sdk.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/x/accounts/keeper/keeper.go" beforeDir="false" afterPath="$PROJECT_DIR$/x/accounts/keeper/keeper.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/demo.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/demo.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/node.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/node.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/x/accounts/keeper/runtime.go" beforeDir="false" afterPath="$PROJECT_DIR$/x/accounts/keeper/runtime.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,6 +65,14 @@
   <component name="GithubDefaultAccount">
     <option name="defaultAccountId" value="b7169951-00a0-4146-adb9-1dc0691b2fb9" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$USER_HOME$/go/pkg/mod/github.com/cosmos/cosmos-sdk@v0.46.7/simapp/app.go" root0="SKIP_INSPECTION" />
+    <setting file="file://$USER_HOME$/go/pkg/mod/github.com/cosmos/cosmos-sdk@v0.46.7/types/module/module.go" root0="SKIP_INSPECTION" />
+    <setting file="file://$USER_HOME$/go/pkg/mod/github.com/cosmos/cosmos-sdk@v0.46.7/types/tx/tx.pb.go" root0="SKIP_INSPECTION" />
+    <setting file="file://$USER_HOME$/go/pkg/mod/github.com/cosmos/cosmos-sdk@v0.46.7/x/auth/tx/builder.go" root0="SKIP_INSPECTION" />
+    <setting file="file://$USER_HOME$/go/pkg/mod/github.com/cosmos/cosmos-sdk@v0.46.7/x/auth/types/account.go" root0="SKIP_INSPECTION" />
+    <setting file="file://$USER_HOME$/go/pkg/mod/github.com/cosmos/cosmos-sdk@v0.46.7/x/auth/vesting/types/vesting.pb.go" root0="SKIP_INSPECTION" />
+  </component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="jqqjz83j" />
   </component>
@@ -44,24 +85,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultGoTemplateProperty": "Go File",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.go.format.on.save.advertiser.fired": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
-    "RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "go.import.settings.migrated": "true",
-    "last_opened_file_path": "/Users/frojdidymylja/GolandProjects/accounts",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.format.on.save.advertiser.fired&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/frojdidymylja/GolandProjects/accounts&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -156,7 +197,8 @@
     <MESSAGE value="tmp" />
     <MESSAGE value="hallelujah" />
     <MESSAGE value="ok all works" />
-    <option name="LAST_COMMIT_MESSAGE" value="ok all works" />
+    <MESSAGE value="change identity to accaddress" />
+    <option name="LAST_COMMIT_MESSAGE" value="change identity to accaddress" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

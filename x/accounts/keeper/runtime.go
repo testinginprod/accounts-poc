@@ -44,8 +44,3 @@ type Schema struct {
 	queries     map[string]interface{}
 	state       *collections.Schema
 }
-
-type runtime struct {
-	accounts map[string]InternalAccount
-	schemas  map[string]*Schema
-}

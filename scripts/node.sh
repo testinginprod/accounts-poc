@@ -7,6 +7,8 @@ accountsd config chain-id "$CHAINID"
 
 accountsd keys add funder
 accountsd keys add beneficiary
+accountsd keys add account1
+accountsd keys add recoverer
 
 accountsd init "test" --chain-id=$CHAINID
 
