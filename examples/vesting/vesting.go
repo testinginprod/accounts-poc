@@ -12,7 +12,7 @@ import (
 
 func NewAccount(sb *collections.SchemaBuilder) Account {
 	return Account{
-		Beneficiary:      collections.NewItem(sb, collections.NewPrefix(0), "owner", sdk.IdentityValue),
+		Beneficiary:      collections.NewItem(sb, collections.NewPrefix(0), "owner", sdk.AccAddressValue),
 		VestedCoinDenom:  collections.NewItem(sb, collections.NewPrefix(1), "vested_denom", collections.StringValue),
 		VestedAmount:     collections.NewItem(sb, collections.NewPrefix(2), "vested_amount", sdk.IntValue),
 		StartTime:        collections.NewItem(sb, collections.NewPrefix(3), "start_time", sdk.TimeValue),

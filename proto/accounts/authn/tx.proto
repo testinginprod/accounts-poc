@@ -5,17 +5,18 @@ option go_package = "accounts/x/authn/types";
 
 import "cosmos/base/v1beta1/coin.proto";
 import "gogoproto/gogo.proto";
+import "accounts/accounts/tx.proto";
 
 // Msg defines the Msg service.
 service Msg {
   rpc CreateAuthenticatedAccount(MsgCreateAuthenticatedAccount) returns (MsgCreateAuthenticatedAccountResponse) {};
-  rpc UpdateAuthenticatedAccount(MsgUpdateAuthn) returns (MsgUpdateAuthnResponse) {};
+  rpc UpdateCredentials(MsgUpdateCredentials) returns (MsgUpdateCredentialsResponse) {};
+  rpc DeleteCredentials(MsgDeleteCredentials) returns (MsgDeleteCredentials) {};
 }
 
 message MsgCreateAuthenticatedAccount {
   bytes credential = 1;
-  string kind = 2;
-  bytes init_message = 3;
+  accounts.MsgDeploy deploy_msg = 2;
 }
 
 message MsgCreateAuthenticatedAccountResponse {
@@ -23,12 +24,13 @@ message MsgCreateAuthenticatedAccountResponse {
   uint64 id = 2;
 }
 
-message MsgUpdateAuthn {
+message MsgUpdateCredentials {
   string sender = 1;
   string kind = 2;
   bytes  new_authn = 3;
 }
 
-message MsgUpdateAuthnResponse {
+message MsgUpdateCredentialsResponse {}
 
-}
+message MsgDeleteCredentials {}
+message MsgDeleteCredentialsResponse {}

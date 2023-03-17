@@ -17,7 +17,7 @@ type Encodable[T any] interface {
 
 var AccAddressFromBech32 = sdk.AccAddressFromBech32
 var IdentityKey = codec.NewBytesKey[AccAddress]()
-var IdentityValue = codec.KeyToValueCodec(IdentityKey)
+var AccAddressValue = codec.KeyToValueCodec(IdentityKey)
 var IntValue codec.ValueCodec[math.Int] = intValueCodec{}
 var TimeKey codec.KeyCodec[time.Time] = timeKey{}
 var TimeValue = codec.KeyToValueCodec(TimeKey)
